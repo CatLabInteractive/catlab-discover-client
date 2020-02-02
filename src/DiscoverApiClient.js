@@ -28,10 +28,14 @@ p.updateDevice = async function(id, key, name, ip, port) {
         name: name,
         ip: ip,
         port: port
+    }, {
+        'x-deviceKey' : key
     });
 };
 
-p.apiRequest = function(path, method, body) {
+p.apiRequest = function(path, method, body, headers) {
+
+    headers = headers || {};
 
     return new Promise(
         (resolve, reject) => {
@@ -40,7 +44,8 @@ p.apiRequest = function(path, method, body) {
                 const requestOptions = {
                     uri: this.apiUrl + path,
                     method: method,
-                    json: body
+                    json: body,
+                    headers: headers
                 };
 
                 //console.log(requestOptions);

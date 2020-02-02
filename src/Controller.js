@@ -38,6 +38,8 @@ async function updateIpAddress() {
         ConfigStore.setDeviceId(deviceData.id, deviceData.key);
     }
 
+    console.log(deviceData);
+
     // Now check if we need to update our certificate.
     // @todo download certificate, install it and restart the webservice (if different)
 
