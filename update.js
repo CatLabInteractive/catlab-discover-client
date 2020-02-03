@@ -1,5 +1,5 @@
 // make sure the environment variables are loaded/set
-const dotenv = require('dotenv');
+require('dotenv').config();
 
 const Controller = require('./src/Controller');
 
