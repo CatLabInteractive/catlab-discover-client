@@ -9,14 +9,25 @@ var DiscoverApiClient = function() {
 
 var p = DiscoverApiClient.prototype;
 
-p.registerDevice = async function(name, ip, port) {
+p.registerDevice = async function(name, ip, port, desiredDomain) {
 
     name = name || 'Unknown device';
 
-    return await this.apiRequest('api/v1/devices/register', 'post', {
+    const body = {
         name: name,
-        ip: ip,
-        port: port
+        ip: ip
+    };
+
+    if (port) {
+        body.port = port;
+    }
+
+    if (desiredDomain) {
+        body.desiredDomain = desiredDomain;
+    }
+
+    return await this.apiRequest('api/v1/devices/register', 'post', body, {
+        'Authentication' : 'Token ' + this.apiToken
     });
 
 };
@@ -24,12 +35,18 @@ p.registerDevice = async function(name, ip, port) {
 p.updateDevice = async function(id, key, name, ip, port) {
     name = name || 'Unknown device';
 
-    return await this.apiRequest('api/v1/devices/' + id, 'put', {
+    const body = {
         name: name,
-        ip: ip,
-        port: port
-    }, {
-        'x-deviceKey' : key
+        ip: ip
+    };
+
+    if (port) {
+        body.port = port;
+    }
+
+    return await this.apiRequest('api/v1/devices/' + id, 'put', body, {
+        'X-DeviceKey' : key,
+        'Authentication' : 'Token ' + this.apiToken
     });
 };
 
@@ -53,6 +70,11 @@ p.apiRequest = function(path, method, body, headers) {
                 request(requestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
+                        return;
+                    }
+
+                    if (response.statusCode > 300) {
+                        reject(body);
                         return;
                     }
 
