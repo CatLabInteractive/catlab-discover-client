@@ -70,7 +70,7 @@ async function updateIpAddress() {
             var cmd = process.env.CMD_CERTIFICATE_CHANGE;
             if (cmd) {
                 console.log('Calling ' + cmd);
-                const shell = require('shelljs')
+                const shell = require('shelljs');
                 shell.exec(cmd);
             }
         } else {
