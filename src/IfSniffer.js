@@ -17,7 +17,8 @@ p.findIpAddress = function(name) {
     Object.keys(ifaces).forEach(function (ifname) {
         var alias = 0;
 
-        if (name && name !== ifname.fname) {
+        if (name && name !== ifname) {
+            console.log('Skipping ' + ifname + ' as it is not the selected device.');
             return;
         }
 
